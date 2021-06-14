@@ -73,30 +73,29 @@ router.post('/', async function(req, res){
         
           const file = req.files.file;
 
-            csv.fromFile(file.tempFilePath).then( async (data)=>{
-                
-                const parsedData = data.map((jsonObject)=>{
-                    // Fields of CSV File - 
-                    // Id,Name,Age,Date of birth,Reporting Manager,Salary,Department
-                    const newObject = {};
-                    newObject["id"] = jsonObject["Id"];
-                    newObject["name"] = jsonObject["Name"];
-                    newObject["age"] = jsonObject["Age"];
-                    newObject["dateOfBirth"] = jsonObject["Date of birth"];
-                    newObject["reportingManager"] = jsonObject["Reporting Manager"];
-                    newObject["salary"] = jsonObject["Salary"];
-                    newObject["department"] = jsonObject["Department"];
-                    return newObject;
-                });
-                
-                const employees = await models.employee.bulkCreate(parsedData);
-                if(employees.length > 0){
-                    res.send({success: true, message: 'uploaded.'});
-                }else{
-                    res.status(500).send({error: true,message: 'Database related internal error.'});  
-                }
+          const data = await csv.fromFile(file.tempFilePath);
 
+            const parsedData = data.map((jsonObject)=>{
+                // Fields of CSV File - 
+                // Id,Name,Age,Date of birth,Reporting Manager,Salary,Department
+                const newObject = {};
+                // newObject["id"] = jsonObject["Id"];
+                newObject["name"] = jsonObject["Name"];
+                newObject["age"] = jsonObject["Age"];
+                newObject["dateOfBirth"] = jsonObject["Date of birth"];
+                newObject["reportingManager"] = jsonObject["Reporting Manager"];
+                newObject["salary"] = jsonObject["Salary"];
+                newObject["department"] = jsonObject["Department"];
+                return newObject;
             });
+            
+            const employees = await models.employee.bulkCreate(parsedData);
+            if(employees.length > 0){
+                res.send({success: true, message: 'uploaded.'});
+            }else{
+                res.status(500).send({error: true,message: 'Database related internal error.'});  
+            }
+
     
     } catch (error) {
         console.log(error.message); 

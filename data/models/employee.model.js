@@ -19,7 +19,6 @@ module.exports = (sequelize) => {
 		reportingManager: {
 			allowNull: false,
 			type: DataTypes.STRING,
-			unique: false,
 			validate: {
 				is: /[\s\w]{3,}/
 			}
@@ -27,7 +26,6 @@ module.exports = (sequelize) => {
         salary: {
 			allowNull: false,
 			type: DataTypes.NUMBER,
-			unique: false,
 			validate: {
 				is: /[\s\w]{1,}/
 			}
@@ -35,7 +33,6 @@ module.exports = (sequelize) => {
 		age: {
 			allowNull: true,
 			type: DataTypes.NUMBER,
-			unique: false,
 			validate: {
 				is: /[\s\w]{1,}/
 			}
