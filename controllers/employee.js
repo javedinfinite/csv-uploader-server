@@ -34,6 +34,21 @@ router.get('/:id', async function(req, res){
     }
 });
 
+router.delete('/', async function(req, res){
+    try {
+        const { idsToDelete } = req.body;
+        const numOfRows = await models.employee.destroy({
+            where: {id: idsToDelete} 
+        });
+        if(numOfRows != null)
+            res.send({success: true, message: 'deleted.'});
+        else
+            res.status(404).send({error: true,message: 'not found.'});
+    } catch (error) {
+        res.status(400).send({error: true,message: 'bad input.'});
+    }
+});
+
 router.delete('/:id', async function(req, res){
     try {
         const numOfRows = await models.employee.findOne({
@@ -75,7 +90,7 @@ router.post('/', async function(req, res){
                 // res.send(parsedData);
                 const employees = await models.employee.bulkCreate(parsedData);
                 if(employees.length > 0){
-                    res.send(employees);
+                    res.send({success: true, message: 'uploaded.'});
                 }else{
                     res.status(500).send({error: true,message: 'Database related internal error.'});  
                 }
