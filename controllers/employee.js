@@ -51,7 +51,7 @@ router.delete('/', async function(req, res){
 
 router.delete('/:id', async function(req, res){
     try {
-        const numOfRows = await models.employee.findOne({
+        const numOfRows = await models.employee.destroy({
             where: {id: req.params.id} 
         });
         if(numOfRows != null)
