@@ -1,0 +1,39 @@
+{
+  "name": "csv-uploader-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "Javed",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "1.15.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "2.7.1",
+    "csv": "^5.5.0",
+    "csvtojson": "^2.0.10",
+    "errorhandler": "1.4.3",
+    "express": "4.13.4",
+    "express-fileupload": "^1.2.1",
+    "express-jwt": "3.3.0",
+    "jsonwebtoken": "7.1.9",
+    "method-override": "2.3.5",
+    "methods": "1.1.2",
+    "morgan": "1.7.0",
+    "passport": "0.3.2",
+    "passport-local": "1.0.0",
+    "pg": "^8.6.0",
+    "request": "2.69.0",
+    "sequelize": "^6.6.2",
+    "slug": "0.9.1",
+    "sqlite3": "^5.0.2",
+    "swagger-ui-express": "^4.1.6",
+    "underscore": "1.8.3"
+  }
+}
