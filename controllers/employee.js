@@ -38,7 +38,7 @@ router.delete('/', async function(req, res){
     try {
         const { idsToDelete } = req.body;
         const numOfRows = await models.employee.destroy({
-            where: {idsDeleted: idsToDelete} 
+            where: {id: idsToDelete} 
         });
         if(numOfRows != null)
             res.send({success: true, message: 'deleted.'});
