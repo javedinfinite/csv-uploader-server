@@ -1,10 +1,10 @@
 var router = require('express').Router();
-const fs = require('fs');
-const csvtojson =require('csvtojson');
+var fs = require('fs');
+var parse = require('csv-parse');
+var multer = require('multer');
+var upload = multer({dest:'uploads/'});
 const { paginate, newObjectWithoutFalsyValues } = require('../utility');
 const { models } = require('../data');
-
-const csv = csvtojson();
 
 router.get('/', async function(req, res){
     try {
@@ -63,38 +63,41 @@ router.delete('/:id', async function(req, res){
     }
 });
 
-router.post('/', async function(req, res){
+router.post('/',upload.single('file'),async function(req, res){
 
     try {
         
-        if (req.files === null) {
+        if (req.file === null) {
             return res.status(400).json({ msg: 'No file uploaded' });
           }
         
-          const file = req.files.file;
-
-          const data = await csv.fromFile(file.tempFilePath);
-
-            const parsedData = data.map((jsonObject)=>{
-                // Fields of CSV File - 
-                // Id,Name,Age,Date of birth,Reporting Manager,Salary,Department
-                const newObject = {};
-                // newObject["id"] = jsonObject["Id"];
-                newObject["name"] = jsonObject["Name"];
-                newObject["age"] = jsonObject["Age"];
-                newObject["dateOfBirth"] = jsonObject["Date of birth"];
-                newObject["reportingManager"] = jsonObject["Reporting Manager"];
-                newObject["salary"] = jsonObject["Salary"];
-                newObject["department"] = jsonObject["Department"];
-                return newObject;
-            });
+          var parser = parse({columns: true}, async function (err, data) {
             
-            const employees = await models.employee.bulkCreate(parsedData);
-            if(employees.length > 0){
-                res.send({success: true, message: 'uploaded.'});
-            }else{
-                res.status(500).send({error: true,message: 'Database related internal error.'});  
-            }
+          const parsedData = data.map((jsonObject)=>{
+              // Fields of CSV File - 
+              // Id,Name,Age,Date of birth,Reporting Manager,Salary,Department
+              const newObject = {};
+              // newObject["id"] = jsonObject["Id"];
+              newObject["name"] = jsonObject["Name"];
+              newObject["age"] = jsonObject["Age"];
+              newObject["dateOfBirth"] = jsonObject["Date of birth"];
+              newObject["reportingManager"] = jsonObject["Reporting Manager"];
+              newObject["salary"] = jsonObject["Salary"];
+              newObject["department"] = jsonObject["Department"];
+              return newObject;
+          });
+          
+          const employees = await models.employee.bulkCreate(parsedData);
+          if(employees.length > 0){
+              res.send({success: true, message: 'uploaded.'});
+          }else{
+              res.status(500).send({error: true,message: 'Database related internal error.'});  
+          }
+            
+
+        });
+
+        fs.createReadStream(req.file.path).pipe(parser);
 
     
     } catch (error) {
