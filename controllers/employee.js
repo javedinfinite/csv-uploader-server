@@ -97,7 +97,8 @@ router.post('/',upload.single('file'),async function(req, res){
 
         });
 
-        fs.createReadStream(req.file.path).pipe(parser);
+        if(req.file.path && fs.existsSync(req.file.path))
+            fs.createReadStream(req.file.path).pipe(parser);
 
     
     } catch (error) {
