@@ -67,7 +67,7 @@ router.post('/',upload.single('file'),async function(req, res){
 
     try {
         
-        if (req.file === null && req.file.path && fs.existsSync(req.file.path)) {
+        if (req.file === null && !req.file.path && !fs.existsSync(req.file.path)) {
             return res.status(400).json({ msg: 'No file uploaded' });
           }
         
