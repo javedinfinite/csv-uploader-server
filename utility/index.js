@@ -47,8 +47,8 @@ const paginate = async (models, pageNumber, pageLimit, employeeName = '') => {
         };
 
         if (employeeName) { 
-                search.where = { name: { [Op.like]: `%${employeeName}%` } };
-                options = {...options, ...search};
+                options.where = { name: { [Op.like]: `%${employeeName}%` } };
+                // options = {...options, ...search};
         }
         
     

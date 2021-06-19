@@ -93,10 +93,8 @@ router.post("/", upload.single("file"), async function (req, res) {
     });
 
     await fs.createReadStream(req.file.path).pipe(parser);
-    // delete file named 'sample.txt'
     fs.unlink(req.file.path, function (err) {
       if (err) throw err;
-      // if no error, file has been deleted successfully
       console.log("File deleted!");
     });
   } catch (error) {
